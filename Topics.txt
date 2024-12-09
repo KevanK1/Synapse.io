@@ -1,0 +1,23 @@
+Set up node js
+Initialising the app
+Using NPM to get packages and using them 
+Creating servers and routes using "http" package
+Creating the same using express
+Rendering html files using ejs
+	Stored in "views" folder --remains(how to get the variables here and ther to ejs and server)
+	express.json() and express.urlencoded({entended:true}) middlewares
+Linking CSS And Js
+	Stored in "public" folder
+	express.static("public")
+Middlewares 
+	types of middlewares 
+		custom middleware 
+				general custom middleware 
+				personal custom middleware 
+		3rd party middleware 
+				example, Morgan 
+		built in middleware
+🌟Form control : How to get the data which is generated from the form on the frontend to the backend
+
+MongoDB
+Getting mongose: npm i mongose
