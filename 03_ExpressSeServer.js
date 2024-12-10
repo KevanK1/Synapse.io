@@ -66,13 +66,19 @@ app.get(
   }
 );
 
-// Form Routes
+// Form Routes and Creating the User In Databse
 app.get("/form", (req, res) => {
   res.render("form"); // Renders the "form.ejs" file
 });
 
-app.post("/give-me-the-form-details", (req, res) => {
+app.post("/give-me-the-form-details", async (req, res) => {
   console.log(req.body); // Logs the submitted form data
+  var { name, email, password} = req.body 
+  await UserModel.create({
+      name:name,
+      email:email,
+      password:password
+  })
   res.send("Form data received! ✌🏻");
 });
 
