@@ -1,69 +1,89 @@
-/* Important 
-What ever we will be doing using Express, is in back done using http package, but the difference is Express provide more of simple and abstracted version of enviroment to create servers and stuff
+/* 
+Important:
+Everything done using Express is ultimately powered by the `http` package. 
+The key difference is that Express provides a simpler and more abstracted environment 
+to create servers, handle routes, and manage middleware efficiently.
 */
 
-const Express = require("express");
-const morgan = require("morgan")
-const app = Express();
+const express = require("express");
+const morgan = require("morgan");
+const app = express();
 
-const Connection= require("./config/db")
-const UsrModle= require("./models/user") //The modle with schema of the datatbase
-// get Express
-// No need to make server explicitly, Express would do that implicitly 😁
+// Database and Models
+const connectDB = require("./config/db"); // Connect to the database
+const UserModel = require("./models/user"); // Schema for the database
 
-app.set("view engine", "ejs");
-// Set up the view engine
+/* 
+Express Implicit Server Creation:
+No need to explicitly create a server with the `http` package. 
+Express handles it for us internally! 😁
+*/
 
-/* Middlewares: This are functions which are executed on the request before getting to any route
- Generally the middleware would be run request getting any route but u can make middleware to act for a single route also
- Just by adding the function before the actual or "main" function of the route.
+// Setting up the View Engine
+app.set("view engine", "ejs"); // Enables rendering of .ejs files from the "views" folder
+
+/* 
+Middlewares:
+Functions that are executed on the request before reaching the route handlers.
+They can be global (apply to all routes) or specific to individual routes.
 */
 
 // Built-in Middleware
-app.use(Express.json()) // As Express cant read req.body, we use this 2 built-in middleware
-app.use(Express.urlencoded({extended:true}))
-app.use(Express.static("public"))
+app.use(express.json()); // Parses incoming JSON payloads and makes them available in `req.body`
+app.use(express.urlencoded({ extended: true })); // Parses URL-encoded data
+app.use(express.static("public")); // Serves static files from the "public" folder
 
-// Third Party Middleware
-app.use(morgan('dev')) // Its a middleware(here its a logger) whose func. is to console.log what request has been made
+// Third-Party Middleware
+app.use(morgan("dev")); // Logs incoming requests with method, URL, and response time
 
 // Custom Middleware
 app.use((req, res, next) => {
-  console.log("first the middleware has run");
-  next();
-  // We have to write this or else the flow o fcode would stop here only and wont run any route as the middlewares are in between the request and the routes
+  console.log("Custom middleware executed");
+  next(); // Ensure the request proceeds to the next middleware or route handler
 });
 
-// Routes
+/* 
+Routes:
+Define your routes using methods like `.get()`, `.post()`, etc.
+*/
+
+// Home Route
 app.get("/", (req, res) => {
-  res.render("index"); // This will render the "index.ejs" of views folder at / route of 3000 port
+  res.render("index"); // Renders the "index.ejs" file from the "views" folder
 });
 
-// Route with personal middleware
-app.get("/One",
-  (req,res,next) => {// middleware
+// Route with a Specific Middleware
+app.get(
+  "/one",
+  (req, res, next) => {
     console.log(
-      "Welcome to the One, enjoy the page, I am the middleware through which u are passed"
+      "Middleware: Welcome to the /one route! Enjoy your visit. 😊"
     );
-    next();
+    next(); // Allow the request to proceed to the main handler
   },
-  (req, res) => {// main function
-    res.send("Hello from One"); // We can use res.end, but not prefered
+  (req, res) => {
+    res.send("Hello from /one!"); // Sends a response
   }
 );
-// set your routes using ".get()" or ".post()"
 
-// Routes doing Form Control
-app.get("/form",(req,res)=>{
-    res.render("form") // REnder the form 
-})
-app.post("/give-me-the-form-details",(req,res)=>{ // using the post to get the data without being seen on url
-    console.log(req.body) // as using .post, the data will be in here, if used .get then it would be req.query
-    // Express cant read req.body, so we use built in middlewares line 20 and 21
-    res.send("data recived ✌🏻")
-})
+// Form Routes
+app.get("/form", (req, res) => {
+  res.render("form"); // Renders the "form.ejs" file
+});
 
+app.post("/give-me-the-form-details", (req, res) => {
+  console.log(req.body); // Logs the submitted form data
+  res.send("Form data received! ✌🏻");
+});
 
+// Update Route Example
+app.get("/update", (req, res) => {
+  UserModel.updateOne({ /* criteria */ }, { /* update fields */ })
+    .then(() => res.send("Update successful"))
+    .catch((err) => res.status(500).send("Error updating data"));
+});
 
-app.listen(3000);
-// assign it port
+// Start the Server
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000 🚀");
+});
