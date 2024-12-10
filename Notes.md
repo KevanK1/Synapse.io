@@ -57,13 +57,14 @@ Its just the simple name or branch given at the end of the url after your portNo
 
 - Express is a framework which makes it easy to create server and routes in it.
 - Read this with the 03_ExpressSeServer.js open in side.
-
 - Its built on top of http package, so its at back doing the same we 
-
 - We dont have to make server explicitly, Express will do that by itself.
 
 ## To make "routes"
 app.get("/route",(req,res)=>{
+    // do something
+})
+app.post("/route",(req,res)=>{
     // do something
 })
 
@@ -111,3 +112,85 @@ We store this html or say ".ejs" files in views folder which we have to create.
 
 As for html files, we created views folder. For CSS and other static files. We will create a public folder
 public folder will not only holds CSS but any static file (i.e the user can see without any authentication) like Js,etc
+
+# MongoDB
+Mongodb is a database management system which uses no sql system to store and manage data We use mongoose package to manage and operate on Mongodb database.
+
+## Getting mongose package: npm i mongose
+
+## Config the Mongo With the server: 
+    Now, like any other external software, we have to also configure Mongodb with our server to operate on it.
+    - We can do this by creating a "config" folder and js file inside that folder having connection setup with the database, either locally or from cloud
+
+### Use mongoose
+    const mongoose = require("mongoose")
+### create the connection
+    const connection = mongoose.connect("mongodb://0.0.0.0/dbName").then(()=>{
+        //this will generally hold a clg statement to cehck whether the connection is set-up or not.
+    })
+### export the connection and make it available for the main app.js file
+    module.export = connection
+
+## Create the Schema and model from it:
+    schema:  Means the structure or the basic fields our database will be having.
+    model: It is like an instance of that schema which can be used to create an object having a structure like that schema
+
+### Getting Mongoose
+    const mongoose = require("mongoose")
+### Declare and build a schema
+    const userSchema = new mongoose.Schema({
+        field1:type,
+    e.g name:String,
+        age:Number,
+        married:Boolean
+    })
+### Built a model from the schema
+    const userModel = mongoose.model('model name i.e modelName',SchemaName i.e userSchema)
+### Export the model
+    module.exports = userModel
+
+## Get the Connection and the Model from the Config and the Models folder
+    const connection = require("./config/config-file-name")
+    const model = require("./models/model-file-name")
+
+## C R U D
+
+### Create
+// DEstructure the req.body
+var { v1, v2, v3}= req.body 
+
+// Create the value
+model.create({
+    name:v1,
+    email:v2,
+    age:v3
+})
+
+### Read
+
+1. model.find().then(()=>{
+          |       |
+          |        ---- This will hold a function to do on the found values
+          ---- This will hold the condition to get values satisfying the condition 
+    // The function
+})
+
+2. model.findOne().then(()=>{
+<!-- This will do almost everything as the above one just the differences are -->
+})
+
+    1. findOne() will return only one value, and if there are multiple value then it will retuen the first value created.
+    
+    2. IN case there's no value satisfying the condition, find() will return an empty array
+        Whereas findOne will retun u null
+
+### Update
+
+model.findeOneAndUpdate
+
+// Destructure the req.body
+var { v1, v2, v3}= req.body
+// Update the value
+model.updateOne({name:v1},{age:v2}).then(()=>{
+    // The function to do on the updated values
+    })

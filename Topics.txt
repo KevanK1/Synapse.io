@@ -20,4 +20,8 @@ Middlewares
 🌟Form control : How to get the data which is generated from the form on the frontend to the backend
 
 MongoDB
-Getting mongose: npm i mongose
+	- Getting mongose: npm i mongose
+	- Config the Mongo With the server
+	- Create Schema and Model out of it
+	- Get the Connection and the Model from the Config and the Models folder
+	- C R U D 
