@@ -49,12 +49,6 @@ Whether you're working solo or in a team, Synapse helps you stay focused by orga
 
 ---
 
-## 📸 Screenshots
-
-_(Insert screenshots here when available from frontend UI)_
-
----
-
 ## 🧩 How It Works (Simplified Flow)
 
 1. **Connect**: Link your platforms via OAuth.
@@ -82,7 +76,7 @@ _(Insert screenshots here when available from frontend UI)_
 
 ## 📬 Contact
 
-Made with ❤️ by [Kevan Tamboli](mailto:kevan.tamboli@gmail.com)
+Made with ❤️ by [Kevan Tamboli](mailto:kevantamboli@gmail.com)
 
 ---
 
